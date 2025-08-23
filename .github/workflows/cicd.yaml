@@ -28,7 +28,7 @@ jobs :
         run  : npm run test
       
       - name : build image
-        run : docker build -t arul8406/icd-pipeline:test .
+        run : docker build -t arul8406/cicd-pipeline:test .
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3
@@ -37,7 +37,7 @@ jobs :
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name : push image to registory
-        run  : docker push arul8406/icd-pipeline:test
+        run  : docker push arul8406/cicd-pipeline:test
 
       
 

@@ -27,8 +27,8 @@ jobs :
       - name : run test 
         run  : npm run test
       
-      -name : build image
-      - run : docker build -t arul8406/icd-pipeline:latest .
+      - name : build image
+        run : docker build -t arul8406/icd-pipeline:latest .
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3

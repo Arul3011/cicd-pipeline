@@ -10,8 +10,13 @@ import Test from './components/Test';
 function App() {
   const [name, setNames] = useState([]);
   useEffect(()=>{
-      const data = myText.split("\n").filter(Boolean);
-    setNames(data);
+    const data = myText.split("\n").filter(Boolean);
+      const formattedData = data.map(line => {
+  const [name, url] = line.split(",");
+  return { name, url };
+});
+
+    setNames(formattedData);
         
       },[])
 

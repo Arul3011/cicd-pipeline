@@ -37,6 +37,15 @@ jobs :
       - name : push image to registory
         run  : docker push arul8406/cicd-pipeline:test
 
+      - name : Trigger Render Deploy
+        if : success() 
+        run: |
+            echo "Triggering Render deploy..."
+            curl -X POST "${{ secrets.RENDER_WEBHOOK_URL }}"
+            echo "Done!"
+
+
+
       
 
       

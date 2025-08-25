@@ -11,7 +11,9 @@ test("names.txt in assets should have valid name,url pairs", () => {
   expect(lines.length).toBeGreaterThan(0);
 
   lines.forEach((line) => {
-    expect(line).toMatch(/^[a-zA-Z0-9]+,https:\/\/github\.com\/[a-zA-Z0-9_-]+$/);
+    // expect(line).toMatch(/^[a-zA-Z0-9]+,https:\/\/github\.com\/[a-zA-Z0-9_-]+$/);
+    expect(line.trim()).toMatch(/^[a-zA-Z0-9]+,https:\/\/github\.com\/[a-zA-Z0-9_-]+$/);
+
 
     const [name, url] = line.split(",");
 

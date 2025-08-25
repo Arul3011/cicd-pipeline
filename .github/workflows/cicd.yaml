@@ -26,7 +26,7 @@ jobs :
         run  : npm run test
       
       - name : build image
-        run : docker build -t arul8406/cicd-pipeline:test .
+        run : docker build -t arul8406/cicd-pipeline:latest .
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3
@@ -35,7 +35,16 @@ jobs :
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name : push image to registory
-        run  : docker push arul8406/cicd-pipeline:test
+        run  : docker push arul8406/cicd-pipeline:latest
+
+      - name : Trigger Render Deploy
+        if : success() 
+        run: |
+            echo "Triggering Render deploy..."
+            curl -X POST "${{ secrets.RENDER_WEBHOOK_URL }}"
+            echo "Done!"
+        
+
 
       
 

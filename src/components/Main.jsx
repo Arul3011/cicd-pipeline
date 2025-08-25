@@ -1,7 +1,6 @@
 import React from 'react';
 
 const MainCol = ({ data }) => {
-  console.log(data);
   return (
     <div className=" bg-blue-50 flex flex-col items-center p-6" >
       <h1 className="text-center text-4xl font-bold text-blue-900 mb-6">WELCOME!</h1>

@@ -23,3 +23,12 @@ jobs:
 
       - name: Run tests
         run: npm run test
+  automerge  : 
+    needs : test
+    runs-on : ubuntu-latest
+    if: ${{ success() }}
+    steps : 
+      - name: Auto merge PR
+        uses: pascalgn/automerge-action@v0.15.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

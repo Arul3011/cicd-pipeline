@@ -26,9 +26,13 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
+      - name: Add automerge label
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
       - uses: pascalgn/automerge-action@v0.15.6
         with:
-          disable-labels: true
           merge-method: squash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

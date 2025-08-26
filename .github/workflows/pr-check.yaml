@@ -9,14 +9,19 @@ jobs:
   check-file:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout PR
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # fetch full history so git diff works
+          fetch-depth: 0  # fetch full history
+
+      - name: Fetch base branch
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }}:$GITHUB_BASE_REF
 
       - name: Ensure only src/assets/data.txt is modified
         run: |
           # Compare PR branch with its base branch
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.ref }}...HEAD)
+          CHANGED_FILES=$(git diff --name-only $GITHUB_BASE_REF...HEAD)
 
           echo "Changed files:"
           echo "$CHANGED_FILES"

@@ -20,13 +20,17 @@ jobs:
       - name: Run tests
         run: npm run test
 
-  automerge:
-    needs: test
-    runs-on: ubuntu-latest
-    if: ${{ success() }}
-    steps:
-      - name: Auto merge PR
-        uses: pascalgn/automerge-action@v0.15.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          INPUT_DISABLE_LABELS: "true"
+automerge:
+  needs: test
+  runs-on: ubuntu-latest
+  if: ${{ success() }}
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Auto merge PR
+      uses: pascalgn/automerge-action@v0.15.6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        pull_request_labels: ""  # disables label requirement
+        merge_method: squash     # optional: merge / rebase / squash

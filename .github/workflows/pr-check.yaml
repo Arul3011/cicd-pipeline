@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # fetch full history so git diff works
 
       - name: Ensure only src/assets/data.txt is modified
         run: |
-          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
+          # Compare PR branch with its base branch
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.ref }}...HEAD)
 
           echo "Changed files:"
           echo "$CHANGED_FILES"
@@ -23,8 +26,7 @@ jobs:
             echo "✅ Only src/assets/data.txt was changed"
             exit 0
           else
-            echo "❌ Invalid changes detected!"
-            echo "❌ You changed: $CHANGED_FILES"
-            echo "✅ Allowed: src/assets/data.txt"
+            echo "❌ Invalid changes detected. Only src/assets/data.txt can be modified."
+            echo "❌ Changed files: $CHANGED_FILES"
             exit 1
           fi

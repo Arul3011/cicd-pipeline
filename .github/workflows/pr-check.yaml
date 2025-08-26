@@ -1,8 +1,9 @@
 name: PR Test
 
 on:
-  pull_request: 
-    branches: 
+  pull_request:
+    types: [opened, synchronize, labeled, unlabeled]
+    branches:
       - main
 
 jobs:
@@ -20,10 +21,14 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: ${{ success() }}
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: pascalgn/automerge-action@v0.15.6
+        with:
+          disable-labels: true
+          merge-method: squash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          INPUT_DISABLE_LABELS: "true"
-          INPUT_MERGE_METHOD: "squash"

@@ -1,46 +1,30 @@
-name: PR Test
+name: Check Only data.txt Changes
 
 on:
   pull_request:
-    types: [opened, synchronize, labeled, unlabeled]
     branches:
       - main
 
 jobs:
-  test:
+  check-file:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - run: npm install
-      - run: npm run test
 
-  add-label:
-    needs: test
-    runs-on: ubuntu-latest
-    if: ${{ success() }}
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Add automerge label
-        uses: actions-ecosystem/action-add-labels@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: automerge
+      - name: Ensure only src/assets/data.txt is modified
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
 
-  automerge:
-    needs: add-label
-    runs-on: ubuntu-latest
-    if: ${{ success() }}
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pascalgn/automerge-action@v0.15.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MERGE_METHOD: squash
-          LABELS: automerge
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Allow only src/assets/data.txt
+          if [ "$CHANGED_FILES" = "src/assets/data.txt" ]; then
+            echo "✅ Only src/assets/data.txt was changed"
+            exit 0
+          else
+            echo "❌ Invalid changes detected!"
+            echo "❌ You changed: $CHANGED_FILES"
+            echo "✅ Allowed: src/assets/data.txt"
+            exit 1
+          fi

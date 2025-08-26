@@ -31,8 +31,14 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           configuration-path: .github/labeler.yml
+      - name: Verify automerge label
+        run: |
+          gh pr view $PR_NUMBER --json labels --jq '.labels[].name'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
       - uses: pascalgn/automerge-action@v0.15.6
         with:
-          merge-method: squash
+          merge: squash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

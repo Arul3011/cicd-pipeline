@@ -17,8 +17,21 @@ jobs:
       - run: npm install
       - run: npm run test
 
-  automerge:
+  add-label:
     needs: test
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Add automerge label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: automerge
+
+  automerge:
+    needs: add-label
     runs-on: ubuntu-latest
     if: ${{ success() }}
     permissions:
@@ -27,8 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pascalgn/automerge-action@v0.15.6
-        with:
-          merge: squash
-          disable-labels: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: squash
+          LABELS: automerge

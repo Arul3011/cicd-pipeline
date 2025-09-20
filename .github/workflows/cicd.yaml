@@ -59,7 +59,6 @@ jobs:
 
       - name: Verify cluster access
         run: |
-          kubectl set image deployments/frontend-deployment frontend=arul8406/cicd-pipeline
           kubectl rollout status deployment/frontend-deployment
         
 

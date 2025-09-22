@@ -76,9 +76,10 @@ Once a PR is accepted, the CI/CD pipeline executes the following workflow:
   ```
 
 ### 7. Trigger Deployment
-- A webhook triggers Render (or the deployment target) to deploy the new image.
+- The pipeline uses **gcloud and kubectl** to update the Kubernetes deployment in **GKE** with the newly built Docker image.
 
 **Note:** Only valid changes to `data.txt` are accepted. Any other modifications will fail the tests.
+
 
 ### Deployment Verification
 

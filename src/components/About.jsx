@@ -27,9 +27,12 @@ const About = () => {
           <li>
             The Docker image is then <span className="font-semibold">pushed to a Docker registry</span> for storage and versioning.
           </li>
-          <li>
-            Finally, a <span className="font-semibold">webhook POST request</span> is sent to <span className="font-semibold">Render</span> to deploy the latest image, making the updated application live.
-          </li>
+         <li>
+  Finally, the pipeline uses <span className="font-semibold">gcloud and kubectl</span> to update the
+  <span className="font-semibold"> GKE deployment</span> with the new Docker image,
+  ensuring the latest version is live in the Kubernetes cluster.
+</li>
+
         </ul>
 
         <p className="text-lg text-gray-800 mt-4">

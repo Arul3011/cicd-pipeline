@@ -12,7 +12,7 @@ jobs:
       - name: Checkout PR
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # fetch full history
+          fetch-depth: 0
 
       - name: Fetch base branch
         run: |
@@ -20,18 +20,31 @@ jobs:
 
       - name: Ensure only src/assets/data.txt is modified
         run: |
-          # Compare PR branch with its base branch
           CHANGED_FILES=$(git diff --name-only $GITHUB_BASE_REF...HEAD)
 
           echo "Changed files:"
           echo "$CHANGED_FILES"
 
-          # Allow only src/assets/data.txt
           if [ "$CHANGED_FILES" = "src/assets/data.txt" ]; then
             echo "✅ Only src/assets/data.txt was changed"
-            exit 0
           else
             echo "❌ Invalid changes detected. Only src/assets/data.txt can be modified."
             echo "❌ Changed files: $CHANGED_FILES"
             exit 1
           fi
+
+  auto-merge:
+    runs-on: ubuntu-latest
+    needs: check-file
+    if: success()
+    steps:
+      - name: Add automerge label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GCP_SA_KEY_1 }}
+          labels: automerge
+
+      - name: Auto Merge PR
+        uses: pascalgn/automerge-action@v0.16.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GCP_SA_KEY_1 }}

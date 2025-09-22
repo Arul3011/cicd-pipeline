@@ -83,7 +83,7 @@ Once a PR is accepted, the CI/CD pipeline executes the following workflow:
 
 ### Deployment Verification
 
-After the pipeline completes successfully, you can verify your changes by checking the deployed application at [https://cicd-pipeline-9d09.onrender.com/](https://cicd-pipeline-9d09.onrender.com/).
+After the pipeline completes successfully, you can verify your changes by checking the deployed application at [http://cicd-pipline-project.run.place/](http://cicd-pipline-project.run.place/).
 
 ```
 https://cicd-pipeline-9d09.onrender.com/

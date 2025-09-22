@@ -14,24 +14,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch base branch
-        run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }}:$GITHUB_BASE_REF
-
       - name: Ensure only src/assets/data.txt is modified
         run: |
-          CHANGED_FILES=$(git diff --name-only $GITHUB_BASE_REF...HEAD)
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
 
           echo "Changed files:"
           echo "$CHANGED_FILES"
 
-          if [ "$CHANGED_FILES" = "src/assets/data.txt" ]; then
-            echo "✅ Only src/assets/data.txt was changed"
-          else
-            echo "❌ Invalid changes detected. Only src/assets/data.txt can be modified."
-            echo "❌ Changed files: $CHANGED_FILES"
-            exit 1
-          fi
+          for file in $CHANGED_FILES; do
+            if [ "$file" != "src/assets/data.txt" ]; then
+              echo "❌ Invalid file modified: $file"
+              exit 1
+            fi
+          done
+          echo "✅ Only src/assets/data.txt was changed"
 
   auto-merge:
     runs-on: ubuntu-latest

@@ -7,6 +7,7 @@ on:
 
 jobs: 
   build-and-deploy: 
+    if: github.repository == 'Arul3011/cicd-pipeline'
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: arul8406/cicd-pipeline

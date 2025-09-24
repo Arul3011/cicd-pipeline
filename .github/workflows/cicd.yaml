@@ -53,7 +53,8 @@ jobs:
           install_components: 'gke-gcloud-auth-plugin'
 
       - name: Configure kubectl
-        run: gcloud container clusters get-credentials test-cluster --zone us-central1-a --project leaning-472416
+        run: gcloud container clusters get-credentials cicd-cluster --zone us-central1-a --project leaning-472416
+
 
       - name: Update Kubernetes deployment
         run: |

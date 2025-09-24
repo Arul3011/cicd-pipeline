@@ -37,10 +37,10 @@ jobs:
       - name: Add automerge label
         uses: actions-ecosystem/action-add-labels@v1
         with:
-          github_token: ${{ secrets.GCP_SA_KEY_1 }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: automerge
 
       - name: Auto Merge PR
         uses: pascalgn/automerge-action@v0.16.4
         env:
-          GITHUB_TOKEN: ${{ secrets.GCP_SA_KEY_1 }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
